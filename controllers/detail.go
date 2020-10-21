@@ -2,13 +2,14 @@ package controllers
 
 import (
 	"fmt"
-	models "goScraper/models"
+	models "goanimey/models"
 	"strings"
 
 	"github.com/gocolly/colly"
 	"github.com/gofiber/fiber"
 )
 
+// ControllerDetail to get all info of given anime .
 func ControllerDetail(fibGo *fiber.Ctx) {
 	var danimes = make([]models.DetailAnime, 0)
 	var danime models.DetailAnime = models.DetailAnime{}
@@ -29,8 +30,8 @@ func ControllerDetail(fibGo *fiber.Ctx) {
 				fmt.Printf("something went wrong \n")
 				return
 			}
-			danime.EpisodesNo = append(danime.EpisodesNo, ep.ChildText("a"))
-			danime.EpisodesLink = append(danime.EpisodesLink, ep.ChildAttrs("a", "href")[0])
+			danime.EpisodeNumber = append(danime.EpisodeNumber, ep.ChildText("a"))
+			danime.Episodes = append(danime.Episodes, ep.ChildAttrs("a", "href")[0])
 		})
 		danimes = append(danimes, danime)
 	})
@@ -39,7 +40,7 @@ func ControllerDetail(fibGo *fiber.Ctx) {
 		fibGo.Status(200).JSON(danimes)
 	})
 	c.OnError(func(r *colly.Response, err error) {
-		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err.Error())
 	})
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())

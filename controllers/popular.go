@@ -2,12 +2,13 @@ package controllers
 
 import (
 	"fmt"
-	models "goScraper/models"
+	models "goanimey/models"
 
 	"github.com/gocolly/colly"
 	"github.com/gofiber/fiber"
 )
 
+// ControllerPopular for popular anime.
 func ControllerPopular(fibGo *fiber.Ctx) {
 	var animes = make([]models.Anime, 0)
 	var anime models.Anime = models.Anime{}
@@ -28,9 +29,9 @@ func ControllerPopular(fibGo *fiber.Ctx) {
 
 		c.OnHTML("div[id=popular-this-week]", func(e *colly.HTMLElement) {
 			e.ForEach("div[id=headerDIV_4]", func(i int, e *colly.HTMLElement) {
-				anime.Name = e.ChildText("a[id=headerA_7]")
+				anime.Name = e.ChildAttr("a[id=headerA_7]", "title")
 				anime.Url = e.ChildAttr("a[id=headerA_5]", "href")
-				anime.ImageUrl = e.ChildAttr("img[id=headerIMG_6]", "src")
+				anime.Cover = e.ChildAttr("img[id=headerIMG_6]", "src")
 				animes = append(animes, anime)
 			})
 		})

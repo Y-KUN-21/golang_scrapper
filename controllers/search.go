@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	models "goScraper/models"
+	models "goanimey/models"
 
 	"strings"
 
@@ -10,9 +10,9 @@ import (
 	"github.com/gofiber/fiber"
 )
 
+// ControllerSearch to search the anime passed as query.
 func ControllerSearch(fibGo *fiber.Ctx) {
 	var sanimes = make([]models.SearchAnime, 0)
-	//var sanimesRepo models.SearchAnimeRepo = models.SearchAnimeRepo{}
 	var sanime models.SearchAnime = models.SearchAnime{}
 	replacer := strings.NewReplacer(" ", "+")
 	anime := fibGo.Query("anime")
@@ -24,7 +24,7 @@ func ControllerSearch(fibGo *fiber.Ctx) {
 	c.OnHTML("body", func(e *colly.HTMLElement) {
 		e.ForEach("div[id=headerDIV_95]", func(i int, e *colly.HTMLElement) {
 			if i > -1 {
-				sanime.ImageURL = e.ChildAttr("img:nth-child(1)", "src")
+				sanime.Cover = e.ChildAttr("img:nth-child(1)", "src")
 				sanime.Url = e.ChildAttr("a", "href")
 				sanime.Name = e.ChildText("div:nth-child(2)")
 				sanime.Year = e.ChildText("span:nth-child(3)")

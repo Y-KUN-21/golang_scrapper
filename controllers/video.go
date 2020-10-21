@@ -2,13 +2,15 @@ package controllers
 
 import (
 	"fmt"
-	models "goScraper/models"
+	models "goanimey/models"
 	"regexp"
+	"time"
 
 	"github.com/gocolly/colly"
 	"github.com/gofiber/fiber"
 )
 
+// ControllerVideo for scrapping video url of episode.
 func ControllerVideo(fibGo *fiber.Ctx) {
 	var videos = make([]models.Video, 0)
 	var video models.Video = models.Video{}
@@ -30,6 +32,9 @@ func ControllerVideo(fibGo *fiber.Ctx) {
 
 	c.OnError(func(r *colly.Response, err error) {
 		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+		time.Sleep(3 * time.Second)
+		ControllerVideo(fibGo)
+
 	})
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
