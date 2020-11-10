@@ -17,9 +17,6 @@ func ControllerPopular(fibGo *fiber.Ctx) {
 		"https://4anime.to/popular-this-week/page/2",
 		"https://4anime.to/popular-this-week/page/3",
 		"https://4anime.to/popular-this-week/page/4",
-		"https://4anime.to/popular-this-week/page/5",
-		"https://4anime.to/popular-this-week/page/6",
-		"https://4anime.to/popular-this-week/page/7",
 	}
 
 	for index, element := range urls {

@@ -13,7 +13,8 @@ import (
 func ControllerDetail(fibGo *fiber.Ctx) {
 	var danimes = make([]models.DetailAnime, 0)
 	var danime models.DetailAnime = models.DetailAnime{}
-	replacer := strings.NewReplacer("Tags", "")
+	replaceTags := strings.NewReplacer("Tags", "")
+	replaceDescription := strings.NewReplacer("Description", "")
 	anime := fibGo.Query("anime")
 	url := anime
 	c := colly.NewCollector(
@@ -21,9 +22,8 @@ func ControllerDetail(fibGo *fiber.Ctx) {
 	)
 	c.OnHTML("body", func(e *colly.HTMLElement) {
 		danime.Name = e.ChildText("div[class=titlemobile1]")
-		danime.Description = e.ChildText("div[id=description-mob] p:nth-child(2)")
-		danime.Studio = e.ChildText("a[id=studiomobile1]")
-		danime.Tags = replacer.Replace(e.ChildText("div[class=tags-mobile]"))
+		danime.Description = replaceDescription.Replace(e.ChildText("div[id=description-mob]"))
+		danime.Tags = replaceTags.Replace(e.ChildText("div[class=tags-mobile]"))
 
 		e.ForEach(".episodes.range.active li", func(i int, ep *colly.HTMLElement) {
 			if i < 0 {
@@ -31,7 +31,7 @@ func ControllerDetail(fibGo *fiber.Ctx) {
 				return
 			}
 			danime.EpisodeNumber = append(danime.EpisodeNumber, ep.ChildText("a"))
-			danime.Episodes = append(danime.Episodes, ep.ChildAttrs("a", "href")[0])
+			danime.EpisodeURLs = append(danime.EpisodeURLs, ep.ChildAttrs("a", "href")[0])
 		})
 		danimes = append(danimes, danime)
 	})
