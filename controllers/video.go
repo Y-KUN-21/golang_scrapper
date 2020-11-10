@@ -20,9 +20,9 @@ func ControllerVideo(fibGo *fiber.Ctx) {
 		colly.AllowedDomains("4anime.to"),
 	)
 	c.OnHTML("body", func(e *colly.HTMLElement) {
-		video.Url1 = e.ChildAttr("video[id=example_video_1] source", "src")
+		video.StreamURL = e.ChildAttr("video[id=example_video_1] source", "src")
 		videoRegex := e.ChildText(".mirror-footer.cl script")
-		video.Url2 = r.FindString(videoRegex)
+		video.DownloadURL = r.FindString(videoRegex)
 		videos = append(videos, video)
 	})
 

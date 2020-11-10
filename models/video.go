@@ -1,6 +1,6 @@
 package models
 
 type Video struct {
-	Url1 string `json:"url0"`
-	Url2 string `json:"url1"`
+	StreamURL   string `json:"streamURL"`
+	DownloadURL string `json:"downloadURL"`
 }

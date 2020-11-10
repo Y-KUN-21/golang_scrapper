@@ -24,7 +24,6 @@ func ControllerDetail(fibGo *fiber.Ctx) {
 		danime.Name = e.ChildText("div[class=titlemobile1]")
 		danime.Description = replaceDescription.Replace(e.ChildText("div[id=description-mob]"))
 		danime.Tags = replaceTags.Replace(e.ChildText("div[class=tags-mobile]"))
-
 		e.ForEach(".episodes.range.active li", func(i int, ep *colly.HTMLElement) {
 			if i < 0 {
 				fmt.Printf("something went wrong \n")
